@@ -1,66 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# laratter
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 開発環境
 
-## About Laravel
+-   Laravel Sail（ララベル セイル）
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 使い方
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+コンテナ起動 laravel([localhost](http://localhost/)) phpmyadmin([localhost:8080](http://localhost:8080))
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+./vendor/bin/sail up -d
+```
 
-## Learning Laravel
+コンテナ停止
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+./vendor/bin/sail down
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 環境構築
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Laravel Breeze のインストール
 
-## Laravel Sponsors
+```
+./vendor/bin/sail composer require laravel/breeze --dev
+./vendor/bin/sail php artisan breeze:install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+その他必要なパッケージをインストールしてビルド
 
-### Premium Partners
+```
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run build
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+マイグレート
 
-## Contributing
+```
+./vendor/bin/sail php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+テストユーザを作成
 
-## Code of Conduct
+```
+./vendor/bin/sail php artisan db:seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## マイグレーションによるテーブル作成
 
-## Security Vulnerabilities
+Model `Tweet`を作成。`-m` をつけることでマイグレーションファイルも同時に作成できる。
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+./vendor/bin/sail php artisan make:model Tweet -m
+```
 
-## License
+database/migrations/ の下にあるマイグレーションファイルを編集。
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+マイグレーション実行。
+
+```
+./vendor/bin/sail php artisan migrate
+```
+
+エラーになる場合は以下を実行する。
+
+```
+./vendor/bin/sail php artisan migrate:fresh
+```
+
+## ルーティングとコントローラ
+
+コントローラ `TweetController`を作成。--resource をつけることで、よく使用する処理（代表的な CRUD 処理）を一括して作成することができる。
+
+```
+./vendor/bin/sail php artisan make:controller TweetController --resource
+```
+
+routes/web.php を編集。
+
+ルーティングの一覧表示。
+
+```
+./vendor/bin/sail php artisan route:list
+```
+
+コントローラの実装
+コントローラは`app/Http/Controllers`以下に配置される。
+
+## 共通画面の作成
+
+ビューファイルは `resources/views` ディレクトリ以下に配置する。  
+入力値が不正な場合などはエラー画面を表示して対応する。
+
+```
+mkdir resources/views/common
+touch resources/views/common/errors.blade.php
+```
+
+## tweet 作成画面の作成
+
+```
+# フォルダ作成
+$ mkdir resources/views/tweet
+
+# ファイル作成
+$ touch resources/views/tweet/create.blade.php
+$ touch resources/views/tweet/edit.blade.php
+$ touch resources/views/tweet/index.blade.php
+$ touch resources/views/tweet/show.blade.php
+```
+
+CSS が効いていない気がする．．という場合は下記コマンドを実行して再度動作確認する．
+
+```
+./vendor/bin/sail npm run build
+```
+
+## tweet 作成処理の実装
+
+-   app/Http/Controllers/TweetController.php の store()を編集
+-   app/Models/Tweet.php に関数を作成
+-   app/Http/Controllers/TweetController.php の index()を編集
+
+## オススメサイト
+
+-   [VSCode を Laravel 超特化型にする 最高の拡張機能 10 選まとめ](https://yurupro.cloud/2132/)
+-   [Laravel Sail](https://readouble.com/laravel/8.x/ja/sail.html#:~:text=Laravel%20Sail%E3%81%AF%E3%80%81Laravel%E3%81%AE,%E7%82%B9%E3%82%92%E6%8F%90%E4%BE%9B%E3%81%97%E3%81%BE%E3%81%99%E3%80%82)
+-   [Laravel 公式の Laravel sail で「Laravel」+「phpMyAdmin」をサクッと環境構築](https://qiita.com/Naaaa/items/9b9b6b05a93b8b8f3cec)
+-   [phpmyadmin とは](https://ja.wikipedia.org/wiki/PhpMyAdmin)
+-   [laravel Validator によるバリデーション](https://qiita.com/gone0021/items/c613ef7e006b6f5d47ce)
+-   [PHP Laravel の blade テンプレートを理解する。](https://qiita.com/shizen-shin/items/24d22265db47d7fb3c3d)
