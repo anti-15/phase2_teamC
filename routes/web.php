@@ -18,7 +18,7 @@ use App\Http\Controllers\SearchController;
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/group/join', [Group_create_join_Controller::class, 'join'])->name('group.join');
     Route::resource('group', Group_create_join_Controller::class);
-    Route::get('/group/join/result', [SearchController::class, 'index'])->name('search.result');
+    Route::get('/group/join/result', [SearchController::class, 'store'])->name('search.result');
 });
 
 
@@ -32,7 +32,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('group', Group_create_join_Controller::class);
+
 
 
 

@@ -14,4 +14,9 @@ class Group extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function Users()
+    {
+    return $this->hasMany(User::class);
+    }
 }

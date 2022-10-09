@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Member;
+use Auth;
+use Validator;
 
 use Illuminate\Http\Request;
 
@@ -15,7 +18,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        //モデルから参照する
+        return view('dashboard');
     }
 
     /**
@@ -36,7 +39,28 @@ class SearchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'group_id' => 'required',
+            'password' => 'required',
+        ]);
+
+        
+        // バリデーション:エラー
+        if ($validator->fails()) {
+            return redirect()
+                ->route('group.join')
+                ->withInput()
+                ->withErrors($validator);
+        }
+        // create()は最初から用意されている関数
+        // 戻り値は挿入されたレコードの情報
+        //$data = $request->merge(['user_id' => Auth::user()->id])->all();
+
+        
+        $data = $request->merge(['member-id' => Auth::user()->id])->all();
+        $result = Member::create($data);
+        // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
+        return redirect()->route('group.index');
     }
 
     /**
