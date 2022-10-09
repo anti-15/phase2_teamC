@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Group_create_join_Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/group/join', [Group_create_join_Controller::class, 'join'])->name('group.join');
+    Route::resource('group', Group_create_join_Controller::class);
+    Route::get('/group/join/result', [SearchController::class, 'index'])->name('search.result');
+});
 
 
 Route::get('/', function () {
@@ -27,5 +33,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('group', Group_create_join_Controller::class);
+
+
 
 require __DIR__ . '/auth.php';

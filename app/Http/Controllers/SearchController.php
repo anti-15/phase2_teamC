@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Validator;
 use App\Models\Group;
 
-class Group_create_join_Controller extends Controller
+use Illuminate\Http\Request;
+
+class SearchController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('index');
     }
 
     /**
@@ -25,33 +24,18 @@ class Group_create_join_Controller extends Controller
      */
     public function create()
     {
-        return view('group.create_group');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request inde $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'group_id' => 'required',
-            'password' => 'required',
-        ]);
-        // バリデーション:エラー
-        if ($validator->fails()) {
-            return redirect()
-                ->route('group.create')
-                ->withInput()
-                ->withErrors($validator);
-        }
-        // create()は最初から用意されている関数
-        // 戻り値は挿入されたレコードの情報
-        $result = Group::create($request->all());
-        // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('group.index');
+        //
     }
 
     /**
@@ -97,10 +81,5 @@ class Group_create_join_Controller extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function join()
-    {
-        return view('group.join_group');
     }
 }
