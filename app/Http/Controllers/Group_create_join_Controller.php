@@ -15,7 +15,7 @@ class Group_create_join_Controller extends Controller
      */
     public function index()
     {
-        return view('create_group');
+        return view('index');
     }
 
     /**
@@ -31,7 +31,7 @@ class Group_create_join_Controller extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request inde $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
