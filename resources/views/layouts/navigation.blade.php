@@ -10,12 +10,13 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Navigation Links 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('部屋を作る/参加する') }}
                     </x-nav-link>
                 </div>
+                -->
             </div>
 
             <!-- Settings Dropdown -->
