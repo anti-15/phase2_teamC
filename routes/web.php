@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/group/join', [GroupController::class, 'join'])->name('group.join');
+    Route::resource('group', GroupController::class);
+    
+});
 
 
 Route::get('/', function () {
