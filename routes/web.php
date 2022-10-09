@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Group_create_join_Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +26,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::resource('group', Group_create_join_Controller::class);
+
+require __DIR__ . '/auth.php';
