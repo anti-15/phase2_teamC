@@ -17,6 +17,11 @@ class Group extends Model
 
     public function Users()
     {
-    return $this->hasMany(User::class);
+        return $this->hasMany(User::class);
+    }
+
+    public static function getAllOrderByUpdated_at()
+    {
+        return self::orderBy('updated_at', 'desc')->get();
     }
 }

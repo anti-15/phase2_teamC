@@ -25,7 +25,28 @@
               </button>
             </div>
           </a>
-
+          <table class="text-center w-full border-collapse">
+            <thead>
+              <tr>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-lg text-grey-dark border-b border-grey-light">Groups</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($groups as $group)
+              <tr class="hover:bg-grey-lighter">
+                <td class="py-4 px-6 border-b border-grey-light">
+                  <h3 class="text-left font-bold text-lg text-grey-dark">
+                    <a href="{{ route('group.show',$group->group_id) }}">
+                    {{$group->group_id}}
+                    </a>
+                  </h3>
+                  <div class="flex">
+                  </div>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

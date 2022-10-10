@@ -3,6 +3,7 @@
 use App\Http\Controllers\Group_create_join_Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
+use App\Models\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,8 @@ Route::get('/', function () {
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $groups = Group::getAllOrderByUpdated_at();
+    return view('dashboard', compact('groups'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
