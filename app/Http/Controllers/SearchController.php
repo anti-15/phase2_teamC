@@ -44,7 +44,7 @@ class SearchController extends Controller
             'password' => 'required',
         ]);
 
-        
+
         // バリデーション:エラー
         if ($validator->fails()) {
             return redirect()
@@ -56,11 +56,11 @@ class SearchController extends Controller
         // 戻り値は挿入されたレコードの情報
         //$data = $request->merge(['user_id' => Auth::user()->id])->all();
 
-        
-        $data = $request->merge(['member-id' => Auth::user()->id])->all();
+
+        $data = $request->merge(['member_id' => Auth::user()->id])->all();
         $result = Member::create($data);
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('group.index');
+        return redirect()->route('dashboard');
     }
 
     /**

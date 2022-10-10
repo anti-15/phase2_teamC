@@ -17,7 +17,7 @@ class Group_create_join_Controller extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('dashboard');
     }
 
     /**
@@ -54,10 +54,10 @@ class Group_create_join_Controller extends Controller
 
 
         $result = Group::create($request->all());
-        $data = $request->merge(['member-id' => Auth::user()->id])->all();
+        $data = $request->merge(['member_id' => Auth::user()->id])->all();
         $result = Member::create($data);
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('group.index');
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -68,8 +68,8 @@ class Group_create_join_Controller extends Controller
      */
     public function show($group_id)
     {
-        $member = Member::where('group_id', $group_id)->first();
-        return view('index', compact('member'));
+        $members = Member::where('group_id', $group_id)->get();
+        return view('index', compact('members'));
     }
 
     /**
