@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Group;
+use App\Models\Member;
+use Auth;
 
 class Group_create_join_Controller extends Controller
 {
@@ -50,9 +52,10 @@ class Group_create_join_Controller extends Controller
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報
 
-        
+
         $result = Group::create($request->all());
-        //ddd($result);
+        $data = $request->merge(['member-id' => Auth::user()->id])->all();
+        $result = Member::create($data);
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
         return redirect()->route('group.index');
     }
