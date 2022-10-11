@@ -3,7 +3,9 @@
 use App\Http\Controllers\Group_create_join_Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ScheduleController;
 use App\Models\Member;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +36,9 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('groups'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('schedule', ScheduleController::class);
+});
 
 
 

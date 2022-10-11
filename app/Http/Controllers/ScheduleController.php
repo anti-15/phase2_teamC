@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
-use App\Models\Group;
-use App\Models\Member;
-use Auth;
+use App\Models\Schedule;
 
-class Group_create_join_Controller extends Controller
+class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +15,7 @@ class Group_create_join_Controller extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        //
     }
 
     /**
@@ -27,35 +25,33 @@ class Group_create_join_Controller extends Controller
      */
     public function create()
     {
-        return view('group.create_group');
+        return view('schedule_create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request inde $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'group_id' => 'required',
-            'password' => 'required',
+            'start_at' => 'required',
+            'finish_at' => 'required',
+            'title' => 'required',
+            'description' => 'required',
         ]);
         // バリデーション:エラー
         if ($validator->fails()) {
             return redirect()
-                ->route('group.create')
+                ->route('schedule.create')
                 ->withInput()
                 ->withErrors($validator);
         }
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報
-
-
-        $result = Group::create($request->all());
-        $data = $request->merge(['member_id' => Auth::user()->id])->all();
-        $result = Member::create($data);
+        $result = Schedule::create($request->all());
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
         return redirect()->route('dashboard');
     }
@@ -66,11 +62,9 @@ class Group_create_join_Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($group_id)
+    public function show($id)
     {
-        $members = Member::where('group_id', $group_id)->get();
-        $group_id = Member::where('group_id', $group_id)->first();
-        return view('index', compact('members'), compact('group_id'));
+        //
     }
 
     /**
@@ -105,10 +99,5 @@ class Group_create_join_Controller extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function join()
-    {
-        return view('group.join_group');
     }
 }
