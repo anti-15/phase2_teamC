@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Group;
 use App\Models\Member;
+use App\Models\Schedule;
 use Auth;
 
 class Group_create_join_Controller extends Controller
@@ -69,8 +70,10 @@ class Group_create_join_Controller extends Controller
     public function show($group_id)
     {
         $members = Member::where('group_id', $group_id)->get();
-        $group_id = Member::where('group_id', $group_id)->first();
-        return view('index', compact('members'), compact('group_id'));
+        foreach ($members as $member) {
+            $schedules[] = Schedule::where('user_id', $member->member_id)->get();
+        }
+        return view('index', compact('members'), compact('schedules'));
     }
 
     /**
