@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('finish_at');
             $table->text('title');
             $table->text('description');
+            $table->text('user_id');
             $table->timestamps();
         });
     }
