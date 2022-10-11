@@ -39,9 +39,11 @@ class Group_create_join_Controller extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'group_id' => 'required',
+            'group_id' => ['required','unique:groups,group_id'],
             'password' => 'required',
         ]);
+
+
         // バリデーション:エラー
         if ($validator->fails()) {
             return redirect()
