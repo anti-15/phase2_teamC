@@ -40,7 +40,7 @@ class Group_create_join_Controller extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'group_id' => ['required','unique:groups,group_id'],
+            'group_id' => ['required', 'unique:groups,group_id'],
             'password' => 'required',
         ]);
 
@@ -71,11 +71,22 @@ class Group_create_join_Controller extends Controller
      */
     public function show($group_id)
     {
+        $i = 0;
+        $user_id = Auth::user()->id;
         $members = Member::where('group_id', $group_id)->get();
         foreach ($members as $member) {
-            $schedules[] = Schedule::where('user_id', $member->member_id)->get();
+            if ($member->member_id == $user_id) {
+                $i++;
+            }
         }
-        return view('index', compact('members'), compact('schedules'));
+        if ($i > 0) {
+            foreach ($members as $member) {
+                $schedules[] = Schedule::where('user_id', $member->member_id)->get();
+            }
+            return view('index', compact('members'), compact('schedules'));
+        } else {
+            return \App::abort(404);
+        }
     }
 
     /**
