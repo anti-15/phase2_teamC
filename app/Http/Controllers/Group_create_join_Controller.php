@@ -49,7 +49,7 @@ class Group_create_join_Controller extends Controller
             return redirect()
                 ->route('group.create')
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors(array('group_id' => 'このグループIDはすでに使われています'));
         }
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報

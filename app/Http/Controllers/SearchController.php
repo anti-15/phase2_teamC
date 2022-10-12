@@ -50,14 +50,36 @@ class SearchController extends Controller
             return redirect()
                 ->route('group.join')
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors();
         }
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報
         
         
+        //入力チェック
+        //グループがあるかどうかのチェック、グループがあるならtrueを返す。
+        $exists = Member::where('group_id', $request->group_id)->exists();
 
+        //グループがありません
+        if($exists === false){
+            return redirect()
+                ->route('group.join')
+                ->withInput()
+                ->withErrors(array('group_id' => 'グループがありません'));
+        }
 
+        //group_idとpasswordが一致するかどうかのチェック、一致するならtureを返す。
+        $password = Group::where('group_id', $request->group_id)
+                ->where('password',$request->password)
+                ->exists();
+        
+        //パスワードが一致しません
+        if($exists === true && $password === false){
+            return redirect()
+                ->route('group.join')
+                ->withInput()
+                ->withErrors(array('group_id' => 'パスワードが一致しません'));
+        }
         $data = $request->merge(['member_id' => Auth::user()->id])->all();
         $result = Member::create($data);
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
