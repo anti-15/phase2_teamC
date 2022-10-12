@@ -16,11 +16,19 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        $data=Schedule::whereDate('start_at','>=',$request->start)
+        $schedules=Schedule::whereDate('start_at','>=',$request->start)
                     ->whereDate('finish_at','<=',$request->end)
                     ->get(['id','title','start_at','finish_at']);
         // TODO: start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
-        return response()->json($data);
+        $converted_schedule = $schedules->map(function ($schedule) {
+            return collect([
+                'id' => $schedule->id,
+                'title' => $schedule->title,
+                'start' => $schedule->start_at,
+                'end' => $schedule->finish_at,
+            ]);
+        });
+        return response()->json($converted_schedule);
     }
 
     /**
