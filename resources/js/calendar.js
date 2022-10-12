@@ -13,6 +13,7 @@ let calendar = new Calendar(calendarEl, {
         center: "title",
         right: "",
     },
+    locale: "ja",
 
     // 日付をクリック、または範囲を選択したイベント
     selectable: true,
