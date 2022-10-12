@@ -20,7 +20,7 @@ const calendar = new Calendar(calendarEl, {
         center: "title",
         right: "dayGridMonth,timeGridWeek,listWeek",
     },
-    events: '/full-calendar',
+    events: '/schedule',
     selectable: true,
     selectHelper: true,
     locale: "ja",
@@ -32,7 +32,7 @@ const calendar = new Calendar(calendarEl, {
             var end = formatDate(end, 'Y-MM-DD HH:mm:ss')
 
             try {
-                const response = await fetch("/full-calendar/action", {
+                const response = await fetch("/schedule/action", {
                     method: 'POST',
                     body: JSON.stringify({
                         title: title,

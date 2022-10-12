@@ -16,7 +16,12 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        if($request->ajax()){
+            $data=Event::whereDate('start_at','>=',$request->start)
+                        ->whereDate('finish_at','<=',$request->end)
+                        ->get(['id','title','start_at','finish_at']);
+            return response()->json($data);
+        }
     }
 
     /**
