@@ -80,10 +80,28 @@ class SearchController extends Controller
                 ->withInput()
                 ->withErrors(array('group_id' => 'パスワードが一致しません'));
         }
-        $data = $request->merge(['member_id' => Auth::user()->id])->all();
-        $result = Member::create($data);
-        // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('dashboard');
+
+        //すでにjoinしているかどうかをチェック、joinしているならtrueを返す。
+        $member = Member::where('group_id', $request->group_id)
+                ->where('member_id', auth::user()->id)
+                ->exists();
+
+                //ddd($member);
+        
+        //すでにjoinしていたら、何もせずにdashboardに飛ばす
+        if($member === true){
+          return redirect()->route('dashboard');
+        }
+        //joinしていなかったら、membersテーブルに情報を書き込んでdashboardに飛ばす。
+        else{
+            $data = $request->merge(['member_id' => Auth::user()->id])->all();
+            $result = Member::create($data);
+
+            return redirect()->route('dashboard');
+        }
+        
+        
+        
     }
 
     /**
