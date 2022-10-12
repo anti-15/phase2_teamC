@@ -51,7 +51,6 @@ let calendar = new Calendar(calendarEl, {
             }
         }
     },
-    // editable: true,
     // eventResize: function (event, delta) {
     //     var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
     //     var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
