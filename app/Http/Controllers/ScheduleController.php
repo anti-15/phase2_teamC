@@ -14,14 +14,13 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($request->ajax()){
-            $data=Event::whereDate('start_at','>=',$request->start)
-                        ->whereDate('finish_at','<=',$request->end)
-                        ->get(['id','title','start_at','finish_at']);
-            return response()->json($data);
-        }
+        $data=Schedule::whereDate('start_at','>=',$request->start)
+                    ->whereDate('finish_at','<=',$request->end)
+                    ->get(['id','title','start_at','finish_at']);
+        // TODO: start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
+        return response()->json($data);
     }
 
     /**
