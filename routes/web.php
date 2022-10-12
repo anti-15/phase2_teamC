@@ -28,6 +28,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/index', function () {
+    return view('calendar');
+});
 
 
 Route::get('/dashboard', function () {
