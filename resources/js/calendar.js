@@ -6,9 +6,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import { formatDate } from '@fullcalendar/core'
 
-var calendarEl = document.getElementById("calendar");
+const calendarEl = document.getElementById("calendar");
 
-let calendar = new Calendar(calendarEl, {
+// let 変数。再代入可能。
+// const 定数。再代入不可。
+
+const calendar = new Calendar(calendarEl, {
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
     initialView: "dayGridMonth",
     editable: true,
