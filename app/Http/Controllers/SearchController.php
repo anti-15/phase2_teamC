@@ -50,18 +50,58 @@ class SearchController extends Controller
             return redirect()
                 ->route('group.join')
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors();
         }
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報
         
         
+        //入力チェック
+        //グループがあるかどうかのチェック、グループがあるならtrueを返す。
+        $exists = Member::where('group_id', $request->group_id)->exists();
 
+        //グループがありません
+        if($exists === false){
+            return redirect()
+                ->route('group.join')
+                ->withInput()
+                ->withErrors(array('group_id' => 'グループがありません'));
+        }
 
-        $data = $request->merge(['member_id' => Auth::user()->id])->all();
-        $result = Member::create($data);
-        // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('dashboard');
+        //group_idとpasswordが一致するかどうかのチェック、一致するならtureを返す。
+        $password = Group::where('group_id', $request->group_id)
+                ->where('password',$request->password)
+                ->exists();
+        
+        //パスワードが一致しません
+        if($exists === true && $password === false){
+            return redirect()
+                ->route('group.join')
+                ->withInput()
+                ->withErrors(array('group_id' => 'パスワードが一致しません'));
+        }
+
+        //すでにjoinしているかどうかをチェック、joinしているならtrueを返す。
+        $member = Member::where('group_id', $request->group_id)
+                ->where('member_id', auth::user()->id)
+                ->exists();
+
+                //ddd($member);
+        
+        //すでにjoinしていたら、何もせずにdashboardに飛ばす
+        if($member === true){
+          return redirect()->route('dashboard');
+        }
+        //joinしていなかったら、membersテーブルに情報を書き込んでdashboardに飛ばす。
+        else{
+            $data = $request->merge(['member_id' => Auth::user()->id])->all();
+            $result = Member::create($data);
+
+            return redirect()->route('dashboard');
+        }
+        
+        
+        
     }
 
     /**
