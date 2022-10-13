@@ -122,12 +122,12 @@ class ScheduleController extends Controller
     public function action(Request $request)
     {
         $body=json_decode($request->getContent(),true);
-        // $start_at=new DateTime($body['start']);
-        // $finish_at=new DateTime($body['end']);
         logger($body);
             if($body['type']=='add')
             {
                 $user_id = Auth::id();
+                $start_at=new DateTime($body['start']);
+                $finish_at=new DateTime($body['end']);
                 $schedules=Schedule::create([
                     'user_id'=>$user_id,
                     'title'=> $body['title'],
