@@ -64,8 +64,8 @@ const calendar = new Calendar(calendarEl, {
             console.log(info.event.start);
             console.log(info.event.end);
 
-            const response = await fetch("/schedule/action", {
-                method: 'POST',
+            const response = await fetch("/schedule/update", {
+                method: 'PUT',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
@@ -73,7 +73,6 @@ const calendar = new Calendar(calendarEl, {
                     id: info.event.id,
                     start: info.event.start,
                     end: info.event.end,
-                    type: 'update'
                 })
             })
             if (!response.ok) {
@@ -90,8 +89,8 @@ const calendar = new Calendar(calendarEl, {
     },
     eventDrop: async function (info) {
         try {
-            const response = await fetch("/schedule/action", {
-                method: 'POST',
+            const response = await fetch("/schedule/update", {
+                method: 'PUT',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
@@ -99,7 +98,6 @@ const calendar = new Calendar(calendarEl, {
                     id: info.event.id,
                     start: info.event.start,
                     end: info.event.end,
-                    type: 'update'
                 })
             })
             if (!response.ok) {

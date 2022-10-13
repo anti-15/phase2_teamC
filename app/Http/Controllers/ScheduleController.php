@@ -106,7 +106,15 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $body=json_decode($request->getContent(),true);
+        $start_at=new DateTime($body['start']);
+        $finish_at=new DateTime($body['end']);
+        $event=Schedule::find($body['id'])->update([
+            'start_at'=>  $start_at->modify('+9 hours'),
+            'finish_at'  => $finish_at->modify('+9 hours'),
+        ]);
+
+        return response()->json($event);
     }
 
     /**
@@ -122,7 +130,7 @@ class ScheduleController extends Controller
         
         return response()->json($schedule);
     }
-    
+
     public function action(Request $request)
     {
         $body=json_decode($request->getContent(),true);
@@ -140,18 +148,6 @@ class ScheduleController extends Controller
                     'description' =>$body['description']
                 ]);
                 return response()->json($schedules);
-            }
-
-            if($body['type']=='update')
-            {
-                $start_at=new DateTime($body['start']);
-                $finish_at=new DateTime($body['end']);
-                $event=Schedule::find($body['id'])->update([
-                    'start_at'=>  $start_at->modify('+9 hours'),
-                    'finish_at'  => $finish_at->modify('+9 hours'),
-                ]);
-
-                return response()->json($event);
             }
     }
 }
