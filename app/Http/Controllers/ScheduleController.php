@@ -18,8 +18,8 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $schedules=Schedule::whereDate('start_at','>=',$request->start)
-                    ->whereDate('finish_at','<=',$request->end)
-                    ->get(['id','title','start_at','finish_at','description']);
+                            ->whereDate('finish_at','<=',$request->end)
+                            ->get(['id','title','start_at','finish_at','description']);
         // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
         $converted_schedule = $schedules->map(function ($schedule) {
             return collect([
@@ -113,7 +113,6 @@ class ScheduleController extends Controller
             'start_at'=>  $start_at->modify('+9 hours'),
             'finish_at'  => $finish_at->modify('+9 hours'),
         ]);
-
         return response()->json($event);
     }
 
@@ -125,9 +124,7 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        // $body=json_decode($request->getContent(),true);
         $schedule =Schedule::find($id)->delete();
-        
         return response()->json($schedule);
     }
 

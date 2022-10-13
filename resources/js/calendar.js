@@ -4,12 +4,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import { formatDate } from '@fullcalendar/core'
 
 const calendarEl = document.getElementById("calendar");
-
-// let 変数。再代入可能。
-// const 定数。再代入不可。
 
 const calendar = new Calendar(calendarEl, {
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
@@ -29,9 +25,7 @@ const calendar = new Calendar(calendarEl, {
         var description = prompt('Event Description:');
 
         if (title && description) {
-            console.log(document.querySelector('meta[name="csrf-token"]').content)
             try {
-
                 const response = await fetch("/schedule/add", {
                     method: 'POST',
                     headers: {
@@ -45,9 +39,6 @@ const calendar = new Calendar(calendarEl, {
                     })
                 })
                 if (!response.ok) {
-                    console.error('response.ok:', response.ok);
-                    console.error('esponse.status:', response.status);
-                    console.error('esponse.statusText:', response.statusText);
                     throw new Error(response.statusText);
                 }
                 calendar.refetchEvents();
@@ -58,10 +49,6 @@ const calendar = new Calendar(calendarEl, {
     },
     eventResize: async function (info) {
         try {
-            console.log(info.event.id);
-            console.log(info.event.start);
-            console.log(info.event.end);
-
             const response = await fetch(`/schedule/${info.event.id}`, {
                 method: 'PUT',
                 headers: {
@@ -73,9 +60,6 @@ const calendar = new Calendar(calendarEl, {
                 })
             })
             if (!response.ok) {
-                console.error('response.ok:', response.ok);
-                console.error('esponse.status:', response.status);
-                console.error('esponse.statusText:', response.statusText);
                 throw new Error(response.statusText);
             }
             calendar.refetchEvents();
@@ -96,9 +80,6 @@ const calendar = new Calendar(calendarEl, {
                 })
             })
             if (!response.ok) {
-                console.error('response.ok:', response.ok);
-                console.error('esponse.status:', response.status);
-                console.error('esponse.statusText:', response.statusText);
                 throw new Error(response.statusText);
             }
             calendar.refetchEvents();
@@ -106,7 +87,6 @@ const calendar = new Calendar(calendarEl, {
             alert(`Error: ${error}`);
         }
     },
-
     eventClick: async function (info) {
         if (confirm("Are you sure you want to remove it?")) {
             try {
@@ -117,9 +97,6 @@ const calendar = new Calendar(calendarEl, {
                     },
                 })
                 if (!response.ok) {
-                    console.error('response.ok:', response.ok);
-                    console.error('esponse.status:', response.status);
-                    console.error('esponse.statusText:', response.statusText);
                     throw new Error(response.statusText);
                 }
                 calendar.refetchEvents();
