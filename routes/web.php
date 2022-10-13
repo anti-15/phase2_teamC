@@ -31,7 +31,8 @@ Route::get('/', function () {
 Route::get('/calendar', function () {
     return view('calendar');
 });
-
+Route::get('schedule',[ScheduleController::class,'index']);
+Route::post('schedule/action',[ScheduleController::class,'action']);
 
 Route::get('/dashboard', function () {
     $user_id = Auth::id();

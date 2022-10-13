@@ -19,7 +19,7 @@ class ScheduleController extends Controller
         $schedules=Schedule::whereDate('start_at','>=',$request->start)
                     ->whereDate('finish_at','<=',$request->end)
                     ->get(['id','title','start_at','finish_at']);
-        // TODO: start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
+        // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
         $converted_schedule = $schedules->map(function ($schedule) {
             return collect([
                 'id' => $schedule->id,
@@ -116,5 +116,45 @@ class ScheduleController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function action(Request $request)
+    {
+        logger('action');
+            if($request->type=='add')
+            {
+                logger('log');
+                $schedules=Schedule::create([
+                    'title'=> $request->title,
+                    'start_at'=> $request->start,
+                    'finish_at'  => $request->end,
+                ]);
+
+                $converted_schedule = $schedules->map(function ($schedule) {
+                    return collect([
+                        'title' => $schedule->title,
+                        'start_at' => $schedule->start,
+                        'finish_at' => $schedule->end,
+                    ]);
+                });
+                return response()->json($converted_schedule);
+            }
+
+            // if($request->type=='update')
+            // {
+            //     $event=Event::find($request->id)->update([
+            //         'title'=> $request->title,
+            //         'start'=> $request->start,
+            //         'end'  => $request->end
+            //     ]);
+
+            //     return response()->json($event);
+            // }
+
+            // if($request ->type == 'delete')
+            // {
+            //     $schedule =Schedule::find($request->id)->delete();
+
+            //     return response()->json($schedule);
+            // }
     }
 }
