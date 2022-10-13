@@ -28,9 +28,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/calendar', function () {
-    return view('calendar');
-});
 Route::get('schedule',[ScheduleController::class,'index']);
 Route::post('schedule/action',[ScheduleController::class,'action']);
 
