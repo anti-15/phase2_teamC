@@ -51,7 +51,6 @@ const calendar = new Calendar(calendarEl, {
                     throw new Error(response.statusText);
                 }
                 calendar.refetchEvents();
-                alert("Event Created Successfully");
             } catch (error) {
                 alert(`Error: ${error}`);
             }
@@ -80,7 +79,6 @@ const calendar = new Calendar(calendarEl, {
                 throw new Error(response.statusText);
             }
             calendar.refetchEvents();
-            alert("Event Updated Successfully");
         } catch (error) {
             alert(`Error: ${error}`);
         }
@@ -104,7 +102,6 @@ const calendar = new Calendar(calendarEl, {
                 throw new Error(response.statusText);
             }
             calendar.refetchEvents();
-            alert("Event Updated Successfully");
         } catch (error) {
             alert(`Error: ${error}`);
         }
@@ -126,7 +123,6 @@ const calendar = new Calendar(calendarEl, {
                     throw new Error(response.statusText);
                 }
                 calendar.refetchEvents();
-                alert("Event Deleted  Successfully");
             } catch (error) {
                 alert(`Error: ${error}`);
             }
