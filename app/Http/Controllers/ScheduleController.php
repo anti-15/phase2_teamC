@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Schedule;
 use Auth;
+use DateTime;
 
 class ScheduleController extends Controller
 {
@@ -18,7 +19,7 @@ class ScheduleController extends Controller
     {
         $schedules=Schedule::whereDate('start_at','>=',$request->start)
                     ->whereDate('finish_at','<=',$request->end)
-                    ->get(['id','title','start_at','finish_at']);
+                    ->get(['id','title','start_at','finish_at','description']);
         // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
         $converted_schedule = $schedules->map(function ($schedule) {
             return collect([
@@ -26,6 +27,7 @@ class ScheduleController extends Controller
                 'title' => $schedule->title,
                 'start' => $schedule->start_at,
                 'end' => $schedule->finish_at,
+                'description'=>$schedule->description
             ]);
         });
         return response()->json($converted_schedule);
@@ -119,24 +121,22 @@ class ScheduleController extends Controller
     }
     public function action(Request $request)
     {
-        logger('action');
-            if($request->type=='add')
+        $body=json_decode($request->getContent(),true);
+        logger($body);
+            if($body['type']=='add')
             {
                 logger('log');
+                $user_id = Auth::id();
+                $start_at=new DateTime($body['start']);
+                $finish_at=new DateTime($body['end']);
                 $schedules=Schedule::create([
-                    'title'=> $request->title,
-                    'start_at'=> $request->start,
-                    'finish_at'  => $request->end,
+                    'user_id'=>$user_id,
+                    'title'=> $body['title'],
+                    'start_at'=>  $start_at->modify('+9 hours'),
+                    'finish_at'  => $finish_at->modify('+9 hours'),
+                    'description' =>$body['description']
                 ]);
-
-                $converted_schedule = $schedules->map(function ($schedule) {
-                    return collect([
-                        'title' => $schedule->title,
-                        'start_at' => $schedule->start,
-                        'finish_at' => $schedule->end,
-                    ]);
-                });
-                return response()->json($converted_schedule);
+                return response()->json($schedules);
             }
 
             // if($request->type=='update')
