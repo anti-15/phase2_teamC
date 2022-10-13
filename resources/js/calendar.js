@@ -25,21 +25,10 @@ const calendar = new Calendar(calendarEl, {
     selectHelper: true,
     locale: "ja",
     select: async function ({ start, end, allDay }) {
-        console.log('スタート' + start);
-        console.log(start);
-        console.log('エンド' + end);
-        console.log(end);
         var title = prompt('Event Title:');
         var description = prompt('Event Description:');
 
         if (title && description) {
-            // var start = formatDate(start, 'Y-MM-DD HH:mm:ss')
-            // var end = formatDate(end, 'Y-MM-DD HH:mm:ss')
-            console.log('スタート' + start);
-            console.log(start);
-            console.log('エンド' + end);
-            console.log(end);
-
             console.log(document.querySelector('meta[name="csrf-token"]').content)
             try {
 

@@ -125,7 +125,6 @@ class ScheduleController extends Controller
         logger($body);
             if($body['type']=='add')
             {
-                logger('log');
                 $user_id = Auth::id();
                 $start_at=new DateTime($body['start']);
                 $finish_at=new DateTime($body['end']);
