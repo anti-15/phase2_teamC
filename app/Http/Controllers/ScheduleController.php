@@ -140,6 +140,8 @@ class ScheduleController extends Controller
 
             if($body['type']=='update')
             {
+                $start_at=new DateTime($body['start']);
+                $finish_at=new DateTime($body['end']);
                 $event=Schedule::find($body['id'])->update([
                     'start_at'=>  $start_at->modify('+9 hours'),
                     'finish_at'  => $finish_at->modify('+9 hours'),
