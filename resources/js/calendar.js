@@ -24,7 +24,7 @@ const calendar = new Calendar(calendarEl, {
     selectable: true,
     selectHelper: true,
     locale: "ja",
-    select: async function ({ start, end, allDay }) {
+    select: async function (info) {
         var title = prompt('Event Title:');
         var description = prompt('Event Description:');
 
@@ -39,8 +39,8 @@ const calendar = new Calendar(calendarEl, {
                     },
                     body: JSON.stringify({
                         title: title,
-                        start: start,
-                        end: end,
+                        start: info.start,
+                        end: info.end,
                         description: description,
                         type: 'add'
                     })
