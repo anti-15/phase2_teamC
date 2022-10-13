@@ -131,23 +131,19 @@ class ScheduleController extends Controller
         return response()->json($schedule);
     }
 
-    public function action(Request $request)
+    public function add(Request $request)
     {
+        $user_id = Auth::id();
         $body=json_decode($request->getContent(),true);
-        logger($body);
-            if($body['type']=='add')
-            {
-                $user_id = Auth::id();
-                $start_at=new DateTime($body['start']);
-                $finish_at=new DateTime($body['end']);
-                $schedules=Schedule::create([
-                    'user_id'=>$user_id,
-                    'title'=> $body['title'],
-                    'start_at'=>  $start_at->modify('+9 hours'),
-                    'finish_at'  => $finish_at->modify('+9 hours'),
-                    'description' =>$body['description']
-                ]);
-                return response()->json($schedules);
-            }
+        $start_at=new DateTime($body['start']);
+        $finish_at=new DateTime($body['end']);
+        $schedules=Schedule::create([
+            'user_id'=>$user_id,
+            'title'=> $body['title'],
+            'start_at'=>  $start_at->modify('+9 hours'),
+            'finish_at'  => $finish_at->modify('+9 hours'),
+            'description' =>$body['description']
+        ]);
+        return response()->json($schedules);
     }
 }

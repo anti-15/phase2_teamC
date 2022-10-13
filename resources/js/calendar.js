@@ -32,7 +32,7 @@ const calendar = new Calendar(calendarEl, {
             console.log(document.querySelector('meta[name="csrf-token"]').content)
             try {
 
-                const response = await fetch("/schedule/action", {
+                const response = await fetch("/schedule/add", {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -42,7 +42,6 @@ const calendar = new Calendar(calendarEl, {
                         start: info.start,
                         end: info.end,
                         description: description,
-                        type: 'add'
                     })
                 })
                 if (!response.ok) {

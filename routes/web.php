@@ -37,7 +37,7 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedule', ScheduleController::class);
-    Route::post('/schedule/action',[ScheduleController::class,'action']);
+    Route::post('/schedule/add',[ScheduleController::class,'add']);
 });
 
 
