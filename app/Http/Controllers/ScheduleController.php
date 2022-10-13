@@ -115,10 +115,14 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $body=json_decode($request->getContent(),true);
+        $schedule =Schedule::find($body['id'])->delete();
+        
+        return response()->json($schedule);
     }
+    
     public function action(Request $request)
     {
         $body=json_decode($request->getContent(),true);
@@ -148,13 +152,6 @@ class ScheduleController extends Controller
                 ]);
 
                 return response()->json($event);
-            }
-
-            if($body['type']== 'delete')
-            {
-                $schedule =Schedule::find($body['id'])->delete();
-
-                return response()->json($schedule);
             }
     }
 }

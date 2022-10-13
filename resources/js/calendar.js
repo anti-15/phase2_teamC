@@ -118,14 +118,13 @@ const calendar = new Calendar(calendarEl, {
     eventClick: async function (info) {
         if (confirm("Are you sure you want to remove it?")) {
             try {
-                const response = await fetch("/schedule/action", {
-                    method: 'POST',
+                const response = await fetch("/schedule/destroy", {
+                    method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     },
                     body: JSON.stringify({
                         id: info.event.id,
-                        type: 'delete'
                     })
                 })
                 if (!response.ok) {
