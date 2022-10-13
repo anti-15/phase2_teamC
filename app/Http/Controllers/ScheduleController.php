@@ -122,12 +122,12 @@ class ScheduleController extends Controller
     public function action(Request $request)
     {
         $body=json_decode($request->getContent(),true);
+        $start_at=new DateTime($body['start']);
+        $finish_at=new DateTime($body['end']);
         logger($body);
             if($body['type']=='add')
             {
                 $user_id = Auth::id();
-                $start_at=new DateTime($body['start']);
-                $finish_at=new DateTime($body['end']);
                 $schedules=Schedule::create([
                     'user_id'=>$user_id,
                     'title'=> $body['title'],
@@ -138,16 +138,15 @@ class ScheduleController extends Controller
                 return response()->json($schedules);
             }
 
-            // if($request->type=='update')
-            // {
-            //     $event=Event::find($request->id)->update([
-            //         'title'=> $request->title,
-            //         'start'=> $request->start,
-            //         'end'  => $request->end
-            //     ]);
+            if($body['type']=='update')
+            {
+                $event=Schedule::find($body['id'])->update([
+                    'start_at'=>  $start_at->modify('+9 hours'),
+                    'finish_at'  => $finish_at->modify('+9 hours'),
+                ]);
 
-            //     return response()->json($event);
-            // }
+                return response()->json($event);
+            }
 
             // if($request ->type == 'delete')
             // {

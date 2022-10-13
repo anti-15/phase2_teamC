@@ -58,18 +58,21 @@ const calendar = new Calendar(calendarEl, {
             }
         }
     },
-    eventResize: function (event, delta) {
-        var start = formatDate(event.start, 'Y-MM-DD HH:mm:ss');
-        var end = formatDate(event.end, 'Y-MM-DD HH:mm:ss');
-        var title = event.title;
-        var id = event.id;
+    eventResize: async function (info) {
         try {
-            const response = fetch("/schedule/action", {
+            console.log(info.event.id);
+            console.log(info.event.start);
+            console.log(info.event.end);
+
+            const response = await fetch("/schedule/action", {
                 method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
                 body: JSON.stringify({
-                    title: title,
-                    start: start,
-                    end: end,
+                    id: info.event.id,
+                    start: info.event.start,
+                    end: info.event.end,
                     type: 'update'
                 })
             })
@@ -85,35 +88,6 @@ const calendar = new Calendar(calendarEl, {
             alert(`Error: ${error}`);
         }
     },
-
-    // eventResize: function (event, delta) {
-    //     var start = formatDate(event.start, 'Y-MM-DD HH:mm:ss');
-    //     var end = formatDate(event.end, 'Y-MM-DD HH:mm:ss');
-    //     var title = event.title;
-    //     var id = event.id;
-    //     try {
-    //         const response = fetch("/schedule/action", {
-    //             method: 'POST',
-    //             body: JSON.stringify({
-    //                 title: title,
-    //                 start: start,
-    //                 end: end,
-    //                 type: 'update'
-    //             })
-    //         })
-    //         if (!response.ok) {
-    //             console.error('response.ok:', response.ok);
-    //             console.error('esponse.status:', response.status);
-    //             console.error('esponse.statusText:', response.statusText);
-    //             throw new Error(response.statusText);
-    //         }
-    //         calendar.refetchEvents();
-    //         alert("Event Updated Successfully");
-    //     } catch (error) {
-    //         alert(`Error: ${error}`);
-    //     }
-    // },
-
     // eventDrop: function (event, delta) {
     //     var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
     //     var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
