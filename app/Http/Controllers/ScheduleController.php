@@ -109,7 +109,7 @@ class ScheduleController extends Controller
         $body=json_decode($request->getContent(),true);
         $start_at=new DateTime($body['start']);
         $finish_at=new DateTime($body['end']);
-        $event=Schedule::find($body['id'])->update([
+        $event=Schedule::find($id)->update([
             'start_at'=>  $start_at->modify('+9 hours'),
             'finish_at'  => $finish_at->modify('+9 hours'),
         ]);
@@ -123,10 +123,10 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $body=json_decode($request->getContent(),true);
-        $schedule =Schedule::find($body['id'])->delete();
+        // $body=json_decode($request->getContent(),true);
+        $schedule =Schedule::find($id)->delete();
         
         return response()->json($schedule);
     }

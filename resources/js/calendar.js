@@ -64,13 +64,12 @@ const calendar = new Calendar(calendarEl, {
             console.log(info.event.start);
             console.log(info.event.end);
 
-            const response = await fetch("/schedule/update", {
+            const response = await fetch(`/schedule/${info.event.id}`, {
                 method: 'PUT',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
                 body: JSON.stringify({
-                    id: info.event.id,
                     start: info.event.start,
                     end: info.event.end,
                 })
@@ -89,13 +88,12 @@ const calendar = new Calendar(calendarEl, {
     },
     eventDrop: async function (info) {
         try {
-            const response = await fetch("/schedule/update", {
+            const response = await fetch(`/schedule/${info.event.id}`, {
                 method: 'PUT',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
                 body: JSON.stringify({
-                    id: info.event.id,
                     start: info.event.start,
                     end: info.event.end,
                 })
@@ -116,14 +114,11 @@ const calendar = new Calendar(calendarEl, {
     eventClick: async function (info) {
         if (confirm("Are you sure you want to remove it?")) {
             try {
-                const response = await fetch("/schedule/destroy", {
+                const response = await fetch(`/schedule/${info.event.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     },
-                    body: JSON.stringify({
-                        id: info.event.id,
-                    })
                 })
                 if (!response.ok) {
                     console.error('response.ok:', response.ok);

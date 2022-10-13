@@ -28,8 +28,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('schedule',[ScheduleController::class,'index']);
-Route::post('schedule/action',[ScheduleController::class,'action']);
 
 Route::get('/dashboard', function () {
     $user_id = Auth::id();
@@ -39,6 +37,7 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedule', ScheduleController::class);
+    Route::post('/schedule/action',[ScheduleController::class,'action']);
 });
 
 
