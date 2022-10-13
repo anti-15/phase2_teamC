@@ -115,22 +115,31 @@ const calendar = new Calendar(calendarEl, {
         }
     },
 
-    // eventClick: function (event) {
-    //     if (confirm("Are you sure you want to remove it?")) {
-    //         var id = event.id;
-    //         $.ajax({
-    //             url: "/full-calendar/action",
-    //             type: "POST",
-    //             data: {
-    //                 id: id,
-    //                 type: "delete"
-    //             },
-    //             success: function (response) {
-    //                 calendar.fullCalendar('refetchEvents');
-    //                 alert("Event Deleted Successfully");
-    //             }
-    //         })
-    //     }
-    // }
+    eventClick: async function (info) {
+        if (confirm("Are you sure you want to remove it?")) {
+            try {
+                const response = await fetch("/schedule/action", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({
+                        id: info.event.id,
+                        type: 'delete'
+                    })
+                })
+                if (!response.ok) {
+                    console.error('response.ok:', response.ok);
+                    console.error('esponse.status:', response.status);
+                    console.error('esponse.statusText:', response.statusText);
+                    throw new Error(response.statusText);
+                }
+                calendar.refetchEvents();
+                alert("Event Deleted  Successfully");
+            } catch (error) {
+                alert(`Error: ${error}`);
+            }
+        }
+    }
 });
 calendar.render();
