@@ -7,6 +7,7 @@ use Validator;
 use App\Models\Schedule;
 use Auth;
 use DateTime;
+use App\Models\Member;
 
 class ScheduleController extends Controller
 {
@@ -17,7 +18,11 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        $schedules = Schedule::whereDate('start_at', '>=', $request->start)
+
+        $group_id = $request->group_id;
+        $user_id = Member::where('group_id', $group_id);
+        $schedules = Schedule::where('user_id', '1')
+            ->whereDate('start_at', '>=', $request->start)
             ->whereDate('finish_at', '<=', $request->end)
             ->get(['id', 'title', 'start_at', 'finish_at', 'description']);
         // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
@@ -30,6 +35,7 @@ class ScheduleController extends Controller
                 'description' => $schedule->description
             ]);
         });
+
         return response()->json($converted_schedule);
     }
 
