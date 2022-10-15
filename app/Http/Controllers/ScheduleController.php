@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Schedule;
 use Auth;
+use DateTime;
 
 class ScheduleController extends Controller
 {
@@ -14,9 +15,22 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $schedules=Schedule::whereDate('start_at','>=',$request->start)
+                            ->whereDate('finish_at','<=',$request->end)
+                            ->get(['id','title','start_at','finish_at','description']);
+        // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
+        $converted_schedule = $schedules->map(function ($schedule) {
+            return collect([
+                'id' => $schedule->id,
+                'title' => $schedule->title,
+                'start' => $schedule->start_at,
+                'end' => $schedule->finish_at,
+                'description'=>$schedule->description
+            ]);
+        });
+        return response()->json($converted_schedule);
     }
 
     /**
@@ -92,7 +106,14 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $body=json_decode($request->getContent(),true);
+        $start_at=new DateTime($body['start']);
+        $finish_at=new DateTime($body['end']);
+        $event=Schedule::find($id)->update([
+            'start_at'=>  $start_at->modify('+9 hours'),
+            'finish_at'  => $finish_at->modify('+9 hours'),
+        ]);
+        return response()->json($event);
     }
 
     /**
@@ -103,6 +124,23 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $schedule =Schedule::find($id)->delete();
+        return response()->json($schedule);
+    }
+
+    public function add(Request $request)
+    {
+        $user_id = Auth::id();
+        $body=json_decode($request->getContent(),true);
+        $start_at=new DateTime($body['start']);
+        $finish_at=new DateTime($body['end']);
+        $schedules=Schedule::create([
+            'user_id'=>$user_id,
+            'title'=> $body['title'],
+            'start_at'=>  $start_at->modify('+9 hours'),
+            'finish_at'  => $finish_at->modify('+9 hours'),
+            'description' =>$body['description']
+        ]);
+        return response()->json($schedules);
     }
 }

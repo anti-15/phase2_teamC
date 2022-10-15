@@ -29,7 +29,6 @@ Route::get('/', function () {
 });
 
 
-
 Route::get('/dashboard', function () {
     $user_id = Auth::id();
     $groups = Member::where('member_id', $user_id)->get();
@@ -38,6 +37,7 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedule', ScheduleController::class);
+    Route::post('/schedule/add',[ScheduleController::class,'add']);
 });
 
 
