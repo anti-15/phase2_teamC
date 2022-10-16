@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Schedule;
+use App\Models\login;
 use Auth;
 use DateTime;
 use App\Models\Member;
@@ -18,10 +19,11 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
+        $user_id = Auth::user()->id;
+        $group_id = login::where('user_id', $user_id)->first();
+        $member_id = Member::where('group_id', $group_id->group_id)->pluck('member_id');
 
-        $group_id = $request->group_id;
-        $user_id = Member::where('group_id', $group_id);
-        $schedules = Schedule::where('user_id', '1')
+        $schedules = Schedule::whereIn('user_id', $member_id)
             ->whereDate('start_at', '>=', $request->start)
             ->whereDate('finish_at', '<=', $request->end)
             ->get(['id', 'title', 'start_at', 'finish_at', 'description']);
