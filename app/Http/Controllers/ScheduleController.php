@@ -91,7 +91,8 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        //
+        $schedule = Schedule::find($id);
+        return view('schedule_detail', compact('schedule'));
     }
 
     /**
@@ -114,14 +115,20 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $schedule = Schedule::where('id', $id)->first();
+        $user_id = Auth::id();
         $body = json_decode($request->getContent(), true);
-        $start_at = new DateTime($body['start']);
-        $finish_at = new DateTime($body['end']);
-        $event = Schedule::find($id)->update([
-            'start_at' =>  $start_at->modify('+9 hours'),
-            'finish_at'  => $finish_at->modify('+9 hours'),
-        ]);
-        return response()->json($event);
+        if ($schedule->user_id == $user_id) {
+            $start_at = new DateTime($body['start']);
+            $finish_at = new DateTime($body['end']);
+            $event = Schedule::find($id)->update([
+                'start_at' =>  $start_at->modify('+9 hours'),
+                'finish_at'  => $finish_at->modify('+9 hours'),
+            ]);
+            return response()->json($event);
+        } else {
+            return;
+        }
     }
 
     /**
@@ -132,8 +139,10 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
+        $user_id = Schedule::where('id', $id)->first();
+        $group_id = login::where('user_id', $user_id->user_id)->first();
         $schedule = Schedule::find($id)->delete();
-        return response()->json($schedule);
+        return redirect()->route('group.show', $group_id->group_id);
     }
 
     public function add(Request $request)
