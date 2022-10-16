@@ -133,8 +133,10 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
+        $user_id = Schedule::where('id', $id)->first();
+        $group_id = login::where('user_id', $user_id->user_id)->first();
         $schedule = Schedule::find($id)->delete();
-        return response()->json($schedule);
+        return redirect()->route('group.show', $group_id->group_id);
     }
 
     public function add(Request $request)
