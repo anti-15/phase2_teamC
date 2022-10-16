@@ -129,9 +129,14 @@ class Group_create_join_Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($group_id)
+    {   
+        //グループ退会処理
+        $result = Member::where('group_id', $group_id)
+            ->where('member_id', Auth::user()->id)
+            ->delete();
+
+        return redirect()->route('dashboard');
     }
 
     public function join()
