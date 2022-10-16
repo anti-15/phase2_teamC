@@ -7,6 +7,8 @@ use Validator;
 use App\Models\Group;
 use App\Models\Member;
 use App\Models\Schedule;
+use App\Models\User;
+use App\Models\login;
 use Auth;
 
 class Group_create_join_Controller extends Controller
@@ -73,7 +75,16 @@ class Group_create_join_Controller extends Controller
     {
         $i = 0;
         $user_id = Auth::user()->id;
+        if (login::where('user_id', $user_id)->exists()) {
+            login::where('user_id', $user_id)->delete();
+        }
+        $result = login::create([
+            'user_id' => $user_id, 'group_id' => $group_id
+        ]);
         $members = Member::where('group_id', $group_id)->get();
+        foreach ($members as $member) {
+            $users[] = User::where('id', $member->member_id)->get();
+        }
         foreach ($members as $member) {
             if ($member->member_id == $user_id) {
                 $i++;
@@ -83,7 +94,7 @@ class Group_create_join_Controller extends Controller
             foreach ($members as $member) {
                 $schedules[] = Schedule::where('user_id', $member->member_id)->get();
             }
-            return view('index', compact('members'), compact('schedules'));
+            return view('index', compact('group_id'), compact('users'));
         } else {
             return \App::abort(404);
         }
