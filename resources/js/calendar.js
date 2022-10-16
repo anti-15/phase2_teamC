@@ -16,6 +16,12 @@ const calendar = new Calendar(calendarEl, {
         center: "title",
         right: "dayGridMonth,timeGridWeek,listWeek",
     },
+    buttonText: {
+        today: '今日',
+        month: '月',
+        week: '週',
+        list: 'リスト',
+    },
     events: '/schedule',
     selectable: true,
     selectHelper: true,
