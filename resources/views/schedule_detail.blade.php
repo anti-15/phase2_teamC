@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Show Tweet Detail') }}
+      {{ __('show detail of schedule') }}
     </h2>
   </x-slot>
 
@@ -11,7 +11,18 @@
         <div class="p-6 bg-white border-b border-gray-200">
           <div class="mb-6">
             <div class="flex flex-col mb-4">
-              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Tweet</p>
+              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Title</p>
+              <p class="py-2 px-3 text-grey-darkest" id="tweet">
+                {{$schedule->start_at}}
+              </p>
+            </div><div class="flex flex-col mb-4">
+              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Title</p>
+              <p class="py-2 px-3 text-grey-darkest" id="tweet">
+                {{$schedule->finish_at}}
+              </p>
+            </div>
+            <div class="flex flex-col mb-4">
+              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Title</p>
               <p class="py-2 px-3 text-grey-darkest" id="tweet">
                 {{$schedule->title}}
               </p>
