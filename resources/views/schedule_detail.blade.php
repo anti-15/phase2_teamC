@@ -10,14 +10,20 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 bg-white border-b border-gray-200">
           <div class="mb-6">
+             <div class="flex flex-col mb-4">
+              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">name</p>
+              <p class="py-2 px-3 text-grey-darkest" id="tweet">
+                {{$user_name->name}}
+              </p>
+            </div>
             <div class="flex flex-col mb-4">
-              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Title</p>
+              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Start</p>
               <p class="py-2 px-3 text-grey-darkest" id="tweet">
                 {{$schedule->start_at}}
               </p>
             </div>
             <div class="flex flex-col mb-4">
-              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Title</p>
+              <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Finish</p>
               <p class="py-2 px-3 text-grey-darkest" id="tweet">
                 {{$schedule->finish_at}}
               </p>
@@ -55,4 +61,5 @@
       </div>
     </div>
   </div>
+   </div> <div class='hidden'><div id='calendar'></div></div>
 </x-app-layout>

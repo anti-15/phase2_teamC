@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Schedule;
 use App\Models\login;
+use App\Models\User;
 use Auth;
 use DateTime;
 use App\Models\Member;
+use DB;
 
 class ScheduleController extends Controller
 {
@@ -20,23 +22,27 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $user_id = Auth::user()->id;
-        $group_id = login::where('user_id', $user_id)->first();
-        $member_id = Member::where('group_id', $group_id->group_id)->pluck('member_id');
+        if (DB::table('logins')->where('user_id', $user_id)->exists()) {
+            $group_id = login::where('user_id', $user_id)->first();
+            $member_id = Member::where('group_id', $group_id->group_id)->pluck('member_id');
 
-        $schedules = Schedule::whereIn('user_id', $member_id)
-            ->whereDate('start_at', '>=', $request->start)
-            ->whereDate('finish_at', '<=', $request->end)
-            ->get(['id', 'title', 'start_at', 'finish_at', 'description']);
-        // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
-        $converted_schedule = $schedules->map(function ($schedule) {
-            return collect([
-                'id' => $schedule->id,
-                'title' => $schedule->title,
-                'start' => $schedule->start_at,
-                'end' => $schedule->finish_at,
-                'description' => $schedule->description
-            ]);
-        });
+            $schedules = Schedule::whereIn('user_id', $member_id)
+                ->whereDate('start_at', '>=', $request->start)
+                ->whereDate('finish_at', '<=', $request->end)
+                ->get(['id', 'title', 'start_at', 'finish_at', 'description']);
+            // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
+            $converted_schedule = $schedules->map(
+                function ($schedule) {
+                    return collect([
+                        'id' => $schedule->id,
+                        'title' => $schedule->title,
+                        'start' => $schedule->start_at,
+                        'end' => $schedule->finish_at,
+                        'description' => $schedule->description
+                    ]);
+                }
+            );
+        }
 
         return response()->json($converted_schedule);
     }
@@ -92,7 +98,8 @@ class ScheduleController extends Controller
     public function show($id)
     {
         $schedule = Schedule::find($id);
-        return view('schedule_detail', compact('schedule'));
+        $user_name = User::where('id', $schedule->user_id)->first();
+        return view('schedule_detail', compact('schedule'), compact(('user_name')));
     }
 
     /**
