@@ -94,7 +94,7 @@ const calendar = new Calendar(calendarEl, {
         }
     },
     eventClick: async function (info) {
-        window.open('/dashboard');
+        window.location.href = ` /schedule/${info.event.id}`;
     },
 });
 calendar.render();
