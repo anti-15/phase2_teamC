@@ -51,4 +51,5 @@
       </div>
     </div>
   </div>
+  <div class='hidden'><div id='calendar'></div></div>
 </x-app-layout>
