@@ -35,9 +35,10 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('groups'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedule', ScheduleController::class);
-    Route::post('/schedule/add',[ScheduleController::class,'add']);
+    Route::post('/schedule/add', [ScheduleController::class, 'add']);
 });
 
 

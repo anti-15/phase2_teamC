@@ -1,4 +1,4 @@
-import '@fullcalendar/core/vdom'; // for Vite
+import "@fullcalendar/core/vdom"; // for Vite
 import { Calendar } from "@fullcalendar/core";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -15,6 +15,12 @@ const calendar = new Calendar(calendarEl, {
         left: "prev,next today",
         center: "title",
         right: "dayGridMonth,timeGridWeek,listWeek",
+    },
+    buttonText: {
+        today: '今日',
+        month: '月',
+        week: '週',
+        list: 'リスト',
     },
     events: '/schedule',
     selectable: true,
@@ -88,22 +94,7 @@ const calendar = new Calendar(calendarEl, {
         }
     },
     eventClick: async function (info) {
-        if (confirm("Are you sure you want to remove it?")) {
-            try {
-                const response = await fetch(`/schedule/${info.event.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                })
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                calendar.refetchEvents();
-            } catch (error) {
-                alert(`Error: ${error}`);
-            }
-        }
-    }
+        window.location.href = ` /schedule/${info.event.id}`;
+    },
 });
 calendar.render();
