@@ -58,7 +58,7 @@ class SearchController extends Controller
         
         //入力チェック
         //グループがあるかどうかのチェック、グループがあるならtrueを返す。
-        $exists = Member::where('group_id', $request->group_id)->exists();
+        $exists = Group::where('group_id', $request->group_id)->exists();
 
         //グループがありません
         if($exists === false){
