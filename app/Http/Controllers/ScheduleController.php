@@ -115,14 +115,20 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $schedule = Schedule::where('id', $id)->first();
+        $user_id = Auth::id();
         $body = json_decode($request->getContent(), true);
-        $start_at = new DateTime($body['start']);
-        $finish_at = new DateTime($body['end']);
-        $event = Schedule::find($id)->update([
-            'start_at' =>  $start_at->modify('+9 hours'),
-            'finish_at'  => $finish_at->modify('+9 hours'),
-        ]);
-        return response()->json($event);
+        if ($schedule->user_id == $user_id) {
+            $start_at = new DateTime($body['start']);
+            $finish_at = new DateTime($body['end']);
+            $event = Schedule::find($id)->update([
+                'start_at' =>  $start_at->modify('+9 hours'),
+                'finish_at'  => $finish_at->modify('+9 hours'),
+            ]);
+            return response()->json($event);
+        } else {
+            return;
+        }
     }
 
     /**
