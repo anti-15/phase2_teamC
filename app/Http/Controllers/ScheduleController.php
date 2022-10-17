@@ -29,7 +29,7 @@ class ScheduleController extends Controller
             $schedules = Schedule::whereIn('user_id', $member_id)
                 ->whereDate('start_at', '>=', $request->start)
                 ->whereDate('finish_at', '<=', $request->end)
-                ->get(['id', 'title', 'start_at', 'finish_at', 'description']);
+                ->get(['id', 'title', 'start_at', 'finish_at', 'description','color']);
             // start_atをstartに、finish_atをendに変換する処理もしくはScheduleテーブルのスキーマを変更する。
             $converted_schedule = $schedules->map(
                 function ($schedule) {
@@ -38,12 +38,12 @@ class ScheduleController extends Controller
                         'title' => $schedule->title,
                         'start' => $schedule->start_at,
                         'end' => $schedule->finish_at,
-                        'description' => $schedule->description
+                        'description' => $schedule->description,
+                        'color'=>$schedule->color
                     ]);
                 }
             );
         }
-
         return response()->json($converted_schedule);
     }
 
@@ -79,10 +79,11 @@ class ScheduleController extends Controller
                 ->withErrors($validator);
         }
         $user_id = Auth::id();
+        $user_color=User::where("id",$user_id)->first();
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報
         $result = Schedule::create([
-            'user_id' => $user_id, 'start_at' => $request->start_at, 'finish_at' => $request->finish_at,
+            'user_id' => $user_id, 'color'=> $user_color->color,'start_at' => $request->start_at, 'finish_at' => $request->finish_at,
             'title' => $request->title, 'description' => $request->description
         ]);
         // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
