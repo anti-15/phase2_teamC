@@ -42,7 +42,7 @@
               Back
             </a>
             @if($schedule->user_id == Auth::user()->id)
-               <form action="{{ route('schedule.destroy',$schedule->id) }}" method="POST" class="text-left">
+               <form action="{{ route('schedule.destroy',$schedule->id) }}" method="POST" class="text-left" onclick="return confirm('本当に削除しますか？')">
                       @method('delete')
                       @csrf
                       <button type="submit" class="mr-2 ml-2 text-sm hover:bg-gray-200 hover:shadow-none text-white py-1 px-2 focus:outline-none focus:shadow-outline">
