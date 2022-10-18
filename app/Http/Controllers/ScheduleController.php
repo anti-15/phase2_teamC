@@ -156,6 +156,7 @@ class ScheduleController extends Controller
     public function add(Request $request)
     {
         $user_id = Auth::id();
+        $user_color=User::where("id",$user_id)->first();
         $body = json_decode($request->getContent(), true);
         $start_at = new DateTime($body['start']);
         $finish_at = new DateTime($body['end']);
@@ -164,7 +165,8 @@ class ScheduleController extends Controller
             'title' => $body['title'],
             'start_at' =>  $start_at->modify('+9 hours'),
             'finish_at'  => $finish_at->modify('+9 hours'),
-            'description' => $body['description']
+            'description' => $body['description'],
+            'color'=> $user_color->color
         ]);
         return response()->json($schedules);
     }
