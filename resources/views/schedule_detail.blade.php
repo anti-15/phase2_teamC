@@ -17,16 +17,15 @@
               </p>
             </div>
             <div class="flex flex-col mb-4">
+              <div class='flex'>
+                <div>
               <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Start</p>
-              <p class="py-2 px-3 text-grey-darkest" id="tweet">
-                {{$schedule->start_at}}
-              </p>
-            </div>
-            <div class="flex flex-col mb-4">
+                <input readonly type='datetime-local' name='start_at' value="{{ $schedule->start_at }}">
+                </div>
+                 <div>
               <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Finish</p>
-              <p class="py-2 px-3 text-grey-darkest" id="tweet">
-                {{$schedule->finish_at}}
-              </p>
+                <input readonly type='datetime-local' name='finish_at' value="{{ $schedule->finish_at }}">
+                </div>
             </div>
             <div class="flex flex-col mb-4">
               <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Title</p>
@@ -36,16 +35,14 @@
             </div>
             <div class="flex flex-col mb-4">
               <p class="mb-2 uppercase font-bold text-lg text-grey-darkest">Description</p>
-              <p class="py-2 px-3 text-grey-darkest" id="description">
-                {{$schedule->description}}
-              </p>
+              <textarea  readonly name='description' rows='4' placeholder={{ $schedule->description }} ></textarea>
             </div>
             <div class="flex">
              <a href="{{ url()->previous() }}" class="block text-center w-full py-3 m-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
               Back
             </a>
             @if($schedule->user_id == Auth::user()->id)
-               <form action="{{ route('schedule.destroy',$schedule->id) }}" method="POST" class="text-left">
+               <form action="{{ route('schedule.destroy',$schedule->id) }}" method="POST" class="text-left" onclick="return confirm('本当に削除しますか？')">
                       @method('delete')
                       @csrf
                       <button type="submit" class="mr-2 ml-2 text-sm hover:bg-gray-200 hover:shadow-none text-white py-1 px-2 focus:outline-none focus:shadow-outline">
