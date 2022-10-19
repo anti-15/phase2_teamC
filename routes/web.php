@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Group_create_join_Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ScheduleController;
+use App\Models\Member;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/group/join', [Group_create_join_Controller::class, 'join'])->name('group.join');
+    Route::resource('group', Group_create_join_Controller::class);
+    Route::get('/group/join/result', [SearchController::class, 'store'])->name('search.result');
+});
 
 
 Route::get('/', function () {
@@ -20,9 +29,19 @@ Route::get('/', function () {
 });
 
 
-
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user_id = Auth::id();
+    $groups = Member::where('member_id', $user_id)->get();
+    return view('dashboard', compact('groups'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('schedule', ScheduleController::class);
+    Route::post('/schedule/add', [ScheduleController::class, 'add']);
+});
+
+
+
+
+require __DIR__ . '/auth.php';
