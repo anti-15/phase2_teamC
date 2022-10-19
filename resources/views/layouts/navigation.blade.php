@@ -84,6 +84,16 @@
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
+
+                <form method="POST" action="{{ route('group.destroy', Auth::id()) }}">
+                            @csrf
+                            @method('delete')
+                            <x-responsive-nav-link :href="route('group.destroy', Auth::id())"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('グループを退会する') }}
+                            </x-responsive-nav-link>
+                        </form>
             </div>
         </div>
     </div>
