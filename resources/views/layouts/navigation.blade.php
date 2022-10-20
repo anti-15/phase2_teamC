@@ -44,7 +44,8 @@
                             @method('delete')
                             <x-dropdown-link :href="route('group.destroy', Auth::id())"
                                     onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                                this.closest('form').submit();
+                                                return confirm('本当に退会しますか？');">
                                 {{ __('グループを退会する') }}
                             </x-dropdown-link>
                         </form>
@@ -94,7 +95,8 @@
                         @method('delete')
                         <x-dropdown-link :href="route('group.destroy', Auth::id())"
                                 onclick="event.preventDefault();
-                                            this.closest('form').submit();">
+                                            this.closest('form').submit();
+                                            return confirm('本当に退会しますか？');">
                             {{ __('グループを退会する') }}
                         </x-dropdown-link>
                     </form>
