@@ -37,6 +37,19 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
+
+                        @if(Route::is('group.show'))
+                        <form method="POST" action="{{ route('group.destroy', Auth::id()) }}">
+                            @csrf
+                            @method('delete')
+                            <x-dropdown-link :href="route('group.destroy', Auth::id())"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('グループを退会する') }}
+                            </x-dropdown-link>
+                        </form>
+                        @endif
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -74,6 +87,18 @@
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
+
+                @if(Route::is('group.show'))
+                    <form method="POST" action="{{ route('group.destroy', Auth::id()) }}">
+                        @csrf
+                        @method('delete')
+                        <x-dropdown-link :href="route('group.destroy', Auth::id())"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('グループを退会する') }}
+                        </x-dropdown-link>
+                    </form>
+                    @endif
             </div>
         </div>
     </div>
