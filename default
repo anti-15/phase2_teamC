@@ -7,8 +7,28 @@ server {
     index  index.php index.html index.htm;
     server_name  example.com www.example.com; 
 
-    location / {            
-        try_files $uri $uri/ /index.php?$args; # changed for Laravel
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    # 静的ファイルの時の処理。正規表現によるパターンマッチングが使える
+    location ~* \.(jpg|jpeg|gif|css|png|js|ico|svg)$ {
+        expires 30d; # キャッシュの設定。クエリーを変更の処理がしっかりさmaxでもいい。今回は30日
+        log_not_found off; # ログを出さない。publicサーバは攻撃に晒されていてログがたくさん出てしまうため
+        access_log off; # 同じ理由でアクセスログも見えないようにしている
+    }
+    
+    # 動的ファイルの時の処理
+    location ~ \.php$ {
+        # PHPをプログラムとして動かしてくれるPHP-FPMのソケットをFastCGIのパスとしてつなげる。
+        # メモリに展開させる。FPM側の設定のlistenとパスを合わせる
+        fastcgi_pass unix:/cyberowl/storage/php-fpm.sock; 
+        fastcgi_index index.php; # FastCGIのindexファイル名。indexと同じものを設定
+        
+        # PHP-FPMがプログラムを実行するときに必要なパラメータを渡す。サーバ変数のようなもの。
+        # パスだけでなく、リクエストヘッダーだったりスキーマ情報だったりを渡している。
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name; 
+        include fastcgi_params; # その他FastCGI設定ファイルを読み込む
     }
 
     # redirect server error pages to the static page /50x.html
