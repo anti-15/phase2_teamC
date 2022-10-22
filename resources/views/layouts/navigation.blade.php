@@ -8,8 +8,12 @@
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
+
+                    
                 </div>
+
             </div>
+
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -39,15 +43,17 @@
                         </form>
 
                         @if(Route::is('group.show'))
-                        <form method="POST" action="{{ route('group.destroy', Auth::id()) }}">
-                            @csrf
+                        <x-dropdown-link :href="route('group.destroy', Auth::id())">
+                                
+                        <form onClick= "return confirm('本当に退会しますか？')" action="{{ route('group.destroy', Auth::id()) }}" method="POST">
                             @method('delete')
-                            <x-dropdown-link :href="route('group.destroy', Auth::id())"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('グループを退会する') }}
-                            </x-dropdown-link>
+                            @csrf
+                                <button onclick="event.preventDefault();
+                                    this.closest('form').submit(); "type="submit">
+                                    グループを退会する
+                                </button>
                         </form>
+                        </x-dropdown-link>
                         @endif
 
                     </x-slot>
@@ -94,7 +100,8 @@
                         @method('delete')
                         <x-dropdown-link :href="route('group.destroy', Auth::id())"
                                 onclick="event.preventDefault();
-                                            this.closest('form').submit();">
+                                            this.closest('form').submit();
+                                            return confirm('本当に退会しますか？');">
                             {{ __('グループを退会する') }}
                         </x-dropdown-link>
                     </form>

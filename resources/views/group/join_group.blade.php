@@ -15,7 +15,7 @@
             <div class="flex flex-col mb-4">
               <label class="mb-2 uppercase font-bold text-lg text-grey-darkest" for="group_id">Group id</label>
               <input class="border py-2 px-3 text-grey-darkest" type="text" name="group_id" id="keyword">
- </div>           
+            </div>           
             <div class="flex flex-col mb-4">
               <label class="mb-2 uppercase font-bold text-lg text-grey-darkest" for="password">Password</label>
               <input class="border py-2 px-3 text-grey-darkest" type="text" name="password" id="keyword">
@@ -33,5 +33,5 @@
       </div>
     </div>
   </div>
-    <div class='hidden'><div id='calendar'></div></div>
+  <div class='hidden'><div id='calendar'></div></div>
 </x-app-layout>
