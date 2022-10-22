@@ -5,5 +5,5 @@
       {{ $group_id }}
     </h2>
   </x-slot>
-  <div id='calendar'></div>
+    <div id='calendar'></div>
 </x-app-layout>
