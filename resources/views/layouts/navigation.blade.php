@@ -94,18 +94,19 @@
                     </x-responsive-nav-link>
                 </form>
 
-                @if(Route::is('group.show'))
-                    <form method="POST" action="{{ route('group.destroy', Auth::id()) }}">
-                        @csrf
-                        @method('delete')
-                        <x-dropdown-link :href="route('group.destroy', Auth::id())"
-                                onclick="event.preventDefault();
-                                            this.closest('form').submit();
-                                            return confirm('本当に退会しますか？');">
-                            {{ __('グループを退会する') }}
+                    @if(Route::is('group.show'))
+                        <x-dropdown-link :href="route('group.destroy', Auth::id())">
+                                
+                        <form onClick= "return confirm('本当に退会しますか？')" action="{{ route('group.destroy', Auth::id()) }}" method="POST">
+                            @method('delete')
+                            @csrf
+                                <button onclick="event.preventDefault();
+                                    this.closest('form').submit(); "type="submit">
+                                    グループを退会する
+                                </button>
+                        </form>
                         </x-dropdown-link>
-                    </form>
-                    @endif
+                        @endif
             </div>
         </div>
     </div>
