@@ -50,8 +50,9 @@ class SearchController extends Controller
             return redirect()
                 ->route('group.join')
                 ->withInput()
-                ->withErrors();
+                ->withErrors(array('group_id' => '不正な値です'));
         }
+        // create()は最初
         // create()は最初から用意されている関数
         // 戻り値は挿入されたレコードの情報
         

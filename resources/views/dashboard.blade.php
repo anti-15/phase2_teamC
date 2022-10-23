@@ -19,7 +19,7 @@
           </a>
 
           <a class="mb-6" href="{{ route('group.join') }}" method="GET">
-            <div class="flex flex-col mb-4">
+            <div class="hover:flex flex-col mb-4">
               <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
               JOIN
               </button>

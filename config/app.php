@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'ScheduleShare'),
+    'name' => env('app_name', 'Laratimes'),
 
     /*
     |--------------------------------------------------------------------------

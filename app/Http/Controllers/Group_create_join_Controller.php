@@ -131,7 +131,7 @@ class Group_create_join_Controller extends Controller
      */
     public function destroy($user_id)
     {   
-
+        
         //グループ退会処理
         $group = login::where('user_id', $user_id)->first();
         $result = Member::where('group_id', $group->group_id)
