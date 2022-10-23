@@ -43,13 +43,12 @@
                         </form>
 
                         @if(Route::is('group.show'))
-                        <x-dropdown-link :href="route('group.destroy', Auth::id())">
+                        <x-dropdown-link>
                                 
                         <form onClick= "return confirm('本当に退会しますか？')" action="{{ route('group.destroy', Auth::id()) }}" method="POST">
                             @method('delete')
                             @csrf
-                                <button onclick="event.preventDefault();
-                                    this.closest('form').submit(); "type="submit">
+                                <button "type="submit">
                                     グループを退会する
                                 </button>
                         </form>
